@@ -12,6 +12,11 @@ from keras.optimizers import Adam
 from keras.layers import MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 
+emotion_dict = {0: "   Angry   ", 1: "Disgusted", 2: "  Fearful  ", 3: "   Happy   ", 4: "  Neutral  ", 5: "    Sad    ", 6: "Surprised"}
+
+
+emotions_dist={0:"./Emotions/angry.png",2:"./Emotions/disgusted.png",2:"./Emotions/fearful.png",3:"./Emotions/happy.png",4:"./Emotions/neutral.png",5:"./Emotions/sad.png",6:"./Emotions/surpriced.png"}
+
 
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 capture = cv2.VideoCapture(0)
