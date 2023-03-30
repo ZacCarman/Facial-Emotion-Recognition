@@ -43,10 +43,10 @@ emotions_dist={0:"./Emotions/angry.png",2:"./Emotions/Discusted.png",2:"./Emotio
 global last_frame1                                    
 last_frame1 = np.zeros((480, 640, 3), dtype=np.uint8)
 global cap1
+cap1 = cv2.VideoCapture(0)
 show_text=[0]
 
-def show_vid():      
-    cap1 = cv2.VideoCapture(0)                                 
+def show_vid():                                
     if not cap1.isOpened():                             
         print("cant open the camera1")
     flag1, frame1 = cap1.read()
@@ -63,7 +63,7 @@ def show_vid():
         prediction = emotion_model.predict(cropped_img)
         
         maxindex = int(np.argmax(prediction))
-        # cv2.putText(frame1, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame1, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
         show_text[0]=maxindex
     if flag1 is None:
         print ("Major error!")
@@ -76,8 +76,8 @@ def show_vid():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_vid)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        exit()
+    #if cv2.waitKey(1) & 0xFF == ord('q'):
+     #   exit()
 
 
 def show_vid2():
@@ -120,6 +120,7 @@ if __name__ == '__main__':
     show_vid()
     show_vid2()
     root.mainloop()
+    cap1.release()
 
 
     

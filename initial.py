@@ -56,16 +56,16 @@ emotion_dict = {0: "   Angry   ", 1: "Disgusted", 2: "  Fearful  ", 3: "   Happy
 
 
 # Training the model
-emotion_model.compile(loss='categorical_crossentropy',optimizer=Adam(learning_rate=0.0001, decay=1e-6),metrics=['accuracy'])
+# emotion_model.compile(loss='categorical_crossentropy',optimizer=Adam(learning_rate=0.0001, decay=1e-6),metrics=['accuracy'])
 
-emotion_model_info = emotion_model.fit(
-        trainGenerator,
-        steps_per_epoch=28709 // 64,
-        epochs=50,
-        validation_data=validationGenerator,
-        validation_steps=7178 // 64)
+# emotion_model_info = emotion_model.fit(
+#         trainGenerator,
+#         steps_per_epoch=28709 // 64,
+#         epochs=50,
+#         validation_data=validationGenerator,
+#         validation_steps=7178 // 64)
 
-emotion_model.save_weights('model.h5')
+# emotion_model.save_weights('model.h5')
 
 
 
