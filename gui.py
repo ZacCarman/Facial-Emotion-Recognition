@@ -4,6 +4,7 @@ import cv2
 from PIL import Image, ImageTk
 import os
 import numpy as np
+import time
 
 import numpy as np
 import cv2
@@ -81,7 +82,9 @@ def show_vid():
 
 
 def show_vid2():
+    
     frame2=cv2.imread(emotions_dist[show_text[0]])
+    frame2 = cv2.resize(frame2, (300,300))
     pic2=cv2.cvtColor(frame2,cv2.COLOR_BGR2RGB)
     img2=Image.fromarray(frame2)
     imgtk2=ImageTk.PhotoImage(image=img2)
@@ -89,9 +92,10 @@ def show_vid2():
     lmain3.configure(text=emotion_dict[show_text[0]],font=('arial',45,'bold'))
     
     lmain2.configure(image=imgtk2)
-    lmain2.after(10, show_vid2)
+    lmain2.after(1000, show_vid2)
 
 if __name__ == '__main__':
+
     root=tk.Tk()   
     img = ImageTk.PhotoImage(Image.open("logo.jpg"))
     heading = Label(root,image=img,bg='black')
@@ -119,6 +123,7 @@ if __name__ == '__main__':
     exitbutton = Button(root, text='Quit',fg="red",command=root.destroy,font=('arial',25,'bold')).pack(side = BOTTOM)
     show_vid()
     show_vid2()
+
     root.mainloop()
     cap1.release()
 
