@@ -77,8 +77,6 @@ def show_vid():
         lmain.imgtk = imgtk
         lmain.configure(image=imgtk)
         lmain.after(10, show_vid)
-    #if cv2.waitKey(1) & 0xFF == ord('q'):
-     #   exit()
 
 
 def show_vid2():
@@ -114,13 +112,9 @@ if __name__ == '__main__':
     lmain3.place(x=960,y=250)
     lmain2.pack(side=RIGHT)
     lmain2.place(x=900,y=350)
-    
-
-
-    root.title("Photo To Emoji")            
+            
     root.geometry("1400x900+100+10") 
     root['bg']='black'
-    exitbutton = Button(root, text='Quit',fg="red",command=root.destroy,font=('arial',25,'bold')).pack(side = BOTTOM)
     show_vid()
     show_vid2()
 
