@@ -15,38 +15,40 @@ from keras.optimizers import Adam
 from keras.layers import MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 
+# Building CNN
 emotion_model = Sequential()
 
-emotion_model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(48,48,1)))
-emotion_model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
-emotion_model.add(MaxPooling2D(pool_size=(2, 2)))
+emotion_model.add(Conv2D(32, kernel_size = (3, 3), activation='relu', input_shape = (48,48,1)))
+emotion_model.add(Conv2D(64, kernel_size = (3, 3), activation='relu'))
+emotion_model.add(MaxPooling2D(pool_size = (2, 2)))
 emotion_model.add(Dropout(0.25))
 
-emotion_model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-emotion_model.add(MaxPooling2D(pool_size=(2, 2)))
-emotion_model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-emotion_model.add(MaxPooling2D(pool_size=(2, 2)))
+emotion_model.add(Conv2D(128, kernel_size = (3, 3), activation='relu'))
+emotion_model.add(MaxPooling2D(pool_size = (2, 2)))
+emotion_model.add(Conv2D(128, kernel_size = (3, 3), activation='relu'))
+emotion_model.add(MaxPooling2D(pool_size = (2, 2)))
 emotion_model.add(Dropout(0.25))
 
 emotion_model.add(Flatten())
-emotion_model.add(Dense(1024, activation='relu'))
+emotion_model.add(Dense(1024, activation = 'relu'))
 emotion_model.add(Dropout(0.5))
-emotion_model.add(Dense(7, activation='softmax'))
+emotion_model.add(Dense(7, activation = 'softmax'))
 emotion_model.load_weights('model.h5')
 
 cv2.ocl.setUseOpenCL(False)
 
-emotion_dict = {0: "   Angry   ", 1: "Disgusted", 2: "  Fearful  ", 3: "   Happy   ", 4: "  Neutral  ", 5: "    Sad    ", 6: "Surprised"}
+# Initializing emotion dictionary
+emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
+emotions_dist = {0:"./Emotions/angry.png", 1:"./Emotions/disgusted.png", 2:"./Emotions/fearful.png", 3:"./Emotions/happy.png", 4:"./Emotions/neutral.png", 5:"./Emotions/sad.png", 6:"./Emotions/surprised.png"}
 
-
-emotions_dist={0:"./Emotions/angry.png",1:"./Emotions/Discusted.png",2:"./Emotions/fearful.png",3:"./Emotions/Happy.png",4:"./Emotions/neutral.png",5:"./Emotions/sad.png",6:"./Emotions/surpirsed.png"}
-
+# Initializing variables
 global last_frame1                                    
 last_frame1 = np.zeros((480, 640, 3), dtype=np.uint8)
 global cap1
 cap1 = cv2.VideoCapture(0)
-show_text=[0]
+show_text = [0]
 
+# Live video and face detection
 def show_vid():                                
     if not cap1.isOpened():                             
         print("cant open the camera1")
@@ -66,6 +68,7 @@ def show_vid():
         maxindex = int(np.argmax(prediction))
         cv2.putText(frame1, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
         show_text[0]=maxindex
+
     if flag1 is None:
         print ("Major error!")
     elif flag1:
@@ -78,41 +81,40 @@ def show_vid():
         lmain.configure(image=imgtk)
         lmain.after(10, show_vid)
 
-
+# Emotion prediction text and image output
 def show_vid2():
-    
-    frame2=cv2.imread(emotions_dist[show_text[0]])
+    frame2 = cv2.imread(emotions_dist[show_text[0]])
     frame2 = cv2.resize(frame2, (300,300))
-    pic2=cv2.cvtColor(frame2,cv2.COLOR_BGR2RGB)
-    img2=Image.fromarray(frame2)
-    imgtk2=ImageTk.PhotoImage(image=img2)
+
+    img2 = Image.fromarray(frame2)
+    imgtk2 = ImageTk.PhotoImage(image=img2)
+
     lmain2.imgtk2=imgtk2
     lmain3.configure(text=emotion_dict[show_text[0]],font=('arial',45,'bold'))
-    
     lmain2.configure(image=imgtk2)
     lmain2.after(1000, show_vid2)
 
+# Main UI function
 if __name__ == '__main__':
 
     root=tk.Tk()   
+
     img = ImageTk.PhotoImage(Image.open("logo.jpg"))
     heading = Label(root,image=img,bg='black')
-    
     heading.pack() 
-    heading2=Label(root,text="Photo to Emoji",pady=20, font=('arial',45,'bold'),bg='black',fg='#CDCDCD')                                 
     
-    heading2.pack()
     lmain = tk.Label(master=root,padx=50,bd=10)
     lmain2 = tk.Label(master=root,bd=10)
-
-    lmain3=tk.Label(master=root,bd=10,fg="#CDCDCD",bg='black')
+    lmain3 = tk.Label(master=root,bd=10,fg="#CDCDCD",bg='black')
     lmain.pack(side=LEFT)
-    lmain.place(x=50,y=250)
-    lmain3.pack()
-    lmain3.place(x=960,y=250)
+    lmain.place(x=150,y=250)
     lmain2.pack(side=RIGHT)
     lmain2.place(x=900,y=350)
-            
+    lmain3.pack()
+    lmain3.place(x=900,y=250)
+    
+    
+    root.title("Image To Emoji") 
     root.geometry("1400x900+100+10") 
     root['bg']='black'
     show_vid()
