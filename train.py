@@ -52,7 +52,7 @@ emotion_model.add(Dense(7, activation='softmax'))
 
 cv2.ocl.setUseOpenCL(False)
 
-emotion_dict = {0: "   Angry   ", 1: "Disgusted", 2: "  Fearful  ", 3: "   Happy   ", 4: "  Neutral  ", 5: "    Sad    ", 6: "Surprised"}
+emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
 
 # Training model
@@ -65,19 +65,18 @@ emotion_model_info = emotion_model.fit(
         validation_data=validationGenerator,
         validation_steps=7178 // 64)
 
+# Model savefile
 emotion_model.save_weights('model.h5')
 
+# Emotion dictionary initialiaztion
+emotions_dist={0:"./Emotions/angry.png", 1:"./Emotions/disgusted.png", 2:"./Emotions/fearful.png", 3:"./Emotions/happy.png", 4:"./Emotions/neutral.png", 5:"./Emotions/sad.png", 6:"./Emotions/surprised.png"}
 
-
-
-emotions_dist={0:"./Emotions/angry.png",2:"./Emotions/disgusted.png",2:"./Emotions/fearful.png",3:"./Emotions/happy.png",4:"./Emotions/neutral.png",5:"./Emotions/sad.png",6:"./Emotions/surpriced.png"}
-
-
+# Live feed
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 capture = cv2.VideoCapture(0)
 while True:
     if not capture.isOpened():
-        print("No camrea found")
+        print("No camera found!")
     flag, frame = capture.read()
     frame = cv2.resize(frame, (600,500))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
