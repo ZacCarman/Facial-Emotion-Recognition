@@ -17,8 +17,8 @@ validation_dir = 'archive/test'
 train_datagen = ImageDataGenerator(rescale=1./255)
 val_datagen = ImageDataGenerator(rescale=1./255)
 
-# Initialization Steps
-trainGenerator = train_datagen.flow_from_directory( # create a batch of tensor image data
+# Training & Validation initialization and tensor image data
+trainGenerator = train_datagen.flow_from_directory(
     train_dir,
     target_size = (48,48),
     batch_size=64,
@@ -34,7 +34,7 @@ validationGenerator = val_datagen.flow_from_directory(
     class_mode='categorical'
 )
 
-# Building convolution network
+# Building CNN
 emotion_model = Sequential()
 emotion_model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(48,48,1)))
 emotion_model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
@@ -55,17 +55,17 @@ cv2.ocl.setUseOpenCL(False)
 emotion_dict = {0: "   Angry   ", 1: "Disgusted", 2: "  Fearful  ", 3: "   Happy   ", 4: "  Neutral  ", 5: "    Sad    ", 6: "Surprised"}
 
 
-# Training the model
-# emotion_model.compile(loss='categorical_crossentropy',optimizer=Adam(learning_rate=0.0001, decay=1e-6),metrics=['accuracy'])
+# Training model
+emotion_model.compile(loss='categorical_crossentropy',optimizer=Adam(learning_rate=0.0001, decay=1e-6),metrics=['accuracy'])
 
-# emotion_model_info = emotion_model.fit(
-#         trainGenerator,
-#         steps_per_epoch=28709 // 64,
-#         epochs=50,
-#         validation_data=validationGenerator,
-#         validation_steps=7178 // 64)
+emotion_model_info = emotion_model.fit(
+        trainGenerator,
+        steps_per_epoch=28709 // 64,
+        epochs=50,
+        validation_data=validationGenerator,
+        validation_steps=7178 // 64)
 
-# emotion_model.save_weights('model.h5')
+emotion_model.save_weights('model.h5')
 
 
 
@@ -88,7 +88,8 @@ while True:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
     cv2.imshow("Input",frame)  
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     break
+
 capture.release()
 cv2.destroyAllWindows()
