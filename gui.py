@@ -39,7 +39,7 @@ cv2.ocl.setUseOpenCL(False)
 emotion_dict = {0: "   Angry   ", 1: "Disgusted", 2: "  Fearful  ", 3: "   Happy   ", 4: "  Neutral  ", 5: "    Sad    ", 6: "Surprised"}
 
 
-emotions_dist={0:"./Emotions/angry.png",2:"./Emotions/Discusted.png",2:"./Emotions/fearful.png",3:"./Emotions/Happy.png",4:"./Emotions/neutral.png",5:"./Emotions/sad.png",6:"./Emotions/surpirsed.png"}
+emotions_dist={0:"./Emotions/angry.png",1:"./Emotions/Discusted.png",2:"./Emotions/fearful.png",3:"./Emotions/Happy.png",4:"./Emotions/neutral.png",5:"./Emotions/sad.png",6:"./Emotions/surpirsed.png"}
 
 global last_frame1                                    
 last_frame1 = np.zeros((480, 640, 3), dtype=np.uint8)
